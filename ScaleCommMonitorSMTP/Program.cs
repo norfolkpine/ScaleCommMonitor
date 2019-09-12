@@ -179,7 +179,7 @@ class TCPListener
                         sc.Stop();
                         sc.Start();
                         SendEmail("ScaleComm Host: " + host + " Restarted", errorStatus);
-                        using (StreamWriter w = File.AppendText("C:\\Logs\\ScaleCommLog.txt"))
+                        using (StreamWriter w = File.AppendText("C:\\Produmex\\Log\\ScaleCommLog.txt"))
                         {
                             Log("ScaleComm Host: " + host + " Restarted", w);
                         }
@@ -187,7 +187,7 @@ class TCPListener
                     case ServiceControllerStatus.Stopped:
                         sc.Start();
                         SendEmail("ScaleComm Host: " + host + " Service stopped. Initiated Restart", errorStatus);
-                        using (StreamWriter w = File.AppendText("C:\\Logs\\ScaleCommLog.txt"))
+                        using (StreamWriter w = File.AppendText("C:\\Produmex\\Log\\ScaleCommLog.txt"))
                         {
                             Log("ScaleComm Host: " + host + " Service stopped. Initiated Restart", w);
                         }
@@ -214,11 +214,11 @@ class TCPListener
     public static void Main(string[] args)
     {
         {
-           // using (StreamWriter w = File.AppendText("C:\\Logs\\ScaleCommLog.txt"))
+           // using (StreamWriter w = File.AppendText("C:\\Produmex\\Log\\ScaleCommLog.txt"))
            // {
            //     Log("ScaleComm Host: " +  " Showing negative weights. Restarted", w);
            // }
-           // using (StreamReader r = File.OpenText("C:\\Logs\\ScaleCommLog.txt"))
+           // using (StreamReader r = File.OpenText("C:\\Produmex\\Log\\ScaleCommLog.txt"))
            // {
            //     DumpLog(r);
            // }
@@ -351,7 +351,7 @@ class TCPListener
                                             {
                                                 //Console.WriteLine("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
                                                 SendEmail("ScaleComm Host: " + hostArray[x] + " Showing negative weight. Restarted", "The scale continues to read a negative number after 10 checks. The scale comm service has now been restarted. Scale Weight: " + netWeight);
-                                                using (StreamWriter w = File.AppendText("C:\\Logs\\ScaleCommLog.txt"))
+                                                using (StreamWriter w = File.AppendText("C:\\Produmex\\Log\\ScaleCommLog.txt"))
                                                 {
                                                     Log("ScaleComm Host: " + hostArray[x] + " Showing negative weights. Restarted", w);
                                                 }
