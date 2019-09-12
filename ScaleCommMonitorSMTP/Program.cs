@@ -30,6 +30,7 @@ class TCPListener
 
         // Connect to SQL
         Console.Write("Connecting to SQL Server ... ");
+
         string connect = builder.ConnectionString;
 
 
@@ -89,8 +90,10 @@ class TCPListener
         // string queryString = "INSERT INTO dbo.web_ScaleCommData(ID,DevName,CMD,NetWeight,UOM) VALUES(, @devName, @cmd, @netWeight)";
         // string queryString = "INSERT into dbo.web_ScaleCommData(ID, DevName, CMD, NetWeight, UOM) VALUES(4, 'NM', 'TEST', 1400, 'KG');" ;
         //string queryString = "UPDATE dbo.web_ScaleCommData set DevName=@devName, CMD=@cmd, NetWeight=@netWeight, UOM='KG' WHERE DevName=@devName;";
-        string queryString = "IF EXISTS (SELECT * FROM dbo.web_ScaleWeights WHERE DevName = @devName) UPDATE dbo.web_ScaleWeights set DevName=@devName, CMD=@cmd, NetWeight=@netWeight, UOM='KG' WHERE DevName=@devName ELSE INSERT into dbo.web_ScaleWeights(DevName, CMD, NetWeight, UOM) VALUES(@devName, @cmd, @netWeight, 'KG');";
-
+      
+        // string queryString = "IF EXISTS (SELECT * FROM dbo.web_ScaleWeights WHERE DevName = @devName) UPDATE dbo.web_ScaleWeights set DevName=@devName, CMD=@cmd, NetWeight=@netWeight, UOM='KG' WHERE DevName=@devName ELSE INSERT into dbo.web_ScaleWeights(DevName, CMD, NetWeight, UOM) VALUES(@devName, @cmd, @netWeight, 'KG');";
+        string queryString = "IF EXISTS (SELECT * FROM dbo.web_ScaleWeights WHERE DevName = @devName) UPDATE dbo.web_ScaleWeights set DevName=@devName, CMD=@cmd, NetWeight=@netWeight, UOM='KG', DateTime=@dateTime WHERE DevName=@devName ELSE INSERT into dbo.web_ScaleWeights(DevName, CMD, NetWeight, UOM, DateTime) VALUES(@devName, @cmd, @netWeight, 'KG', @dateTime);";
+        DateTime now = DateTime.Now;
         // "SELECT ID, DevName, CMD, NetWeight, UOM FROM dbo.web_ScaleCommData;";
         using (SqlConnection connection = new SqlConnection(
                    connectionString))
@@ -100,6 +103,7 @@ class TCPListener
             command.Parameters.AddWithValue("@devName", devName);
             command.Parameters.AddWithValue("@cmd", cmd);
             command.Parameters.AddWithValue("@netWeight", netWeight);
+            command.Parameters.AddWithValue("@dateTime", now);
             connection.Open();
             command.ExecuteNonQuery();
 
