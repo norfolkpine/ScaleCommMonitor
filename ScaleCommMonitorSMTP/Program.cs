@@ -273,9 +273,9 @@ class TCPListener
                             //Console.WriteLine(today);
                             FileInfo txtfile = new FileInfo("C:\\Produmex\\Log\\ScaleCommLog.txt");
                             //string newFileName = "C:\\Produmex\\Log\\ScaleCommLog" + today + ".txt";
-                            if (txtfile.Length > (10 *  1024 * 1024))       // ## NOTE: 10MB max file size
+                            if (txtfile.Length > (10 * 1024 * 1024))       // ## NOTE: 10MB max file size
                             {
-                                System.IO.File.Move("C:\\Produmex\\Log\\ScaleCommLog.txt", "C:\\Produmex\\Log\\ScaleCommLog" + today + ".txt");
+                                System.IO.File.Move("C:\\Produmex\\Log\\ScaleCommLog.txt", "C:\\Produmex\\Log\\ScaleCommLog_" + today + ".txt");
                             }
                         }
                         catch { }
