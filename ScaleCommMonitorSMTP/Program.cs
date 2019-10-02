@@ -266,6 +266,20 @@ class TCPListener
                         //   string txt = Encoding.ASCII.GetString(receiveBytes, 0, totalBytesReceived); //write variable to string
                         //   txt = txt.Replace(" ", "");
 
+                        //string nameOfFile = "C:\\Produmex\\Log\\ScaleCommLog.txt"
+                        string today = DateTime.Now.ToString("yyyyMMdd");
+                        try
+                        {
+                            //Console.WriteLine(today);
+                            FileInfo txtfile = new FileInfo("C:\\Produmex\\Log\\ScaleCommLog.txt");
+                            //string newFileName = "C:\\Produmex\\Log\\ScaleCommLog" + today + ".txt";
+                            if (txtfile.Length > (10 *  1024 * 1024))       // ## NOTE: 10MB max file size
+                            {
+                                System.IO.File.Move("C:\\Produmex\\Log\\ScaleCommLog.txt", "C:\\Produmex\\Log\\ScaleCommLog" + today + ".txt");
+                            }
+                        }
+                        catch { }
+
                         //Console.WriteLine(x);
                         //Console.WriteLine(hostArray[x]);
 
@@ -318,14 +332,18 @@ class TCPListener
                         else
                         {
                             netWeight = Int32.Parse(netWeightTmp);
-
+                            //netWeight = -5;
 
                             //Console.WriteLine(netWeightTmp);
 
                             Console.WriteLine(devName);
                             Console.WriteLine(cmd);
                             Console.WriteLine(netWeight);
-                            //netWeight = -5;
+                            using (StreamWriter w = File.AppendText("C:\\Produmex\\Log\\ScaleCommLog.txt"))
+                            {
+                                Log(", " + devName + ", " + cmd + ", " + netWeight, w);
+                            }
+                            
 
                             if (netWeight < 0)
                             {
@@ -338,6 +356,11 @@ class TCPListener
                                 Console.WriteLine(y);
                                 Console.WriteLine("negcount: "+ negCount[x]);
                                 Console.WriteLine("negcounts: " + negCount[0] + negCount[1] + negCount[2] + negCount[3] );
+                                using (StreamWriter w = File.AppendText("C:\\Produmex\\Log\\ScaleCommLog.txt"))
+                                {
+                                    Log(", " + devName + ", " + "negcount: " + negCount[x] + ", "  + netWeight, w);
+                                }
+
                                 if (y == 10)
                                 {
                                     negCount[x] = negCount[x] + 1;
