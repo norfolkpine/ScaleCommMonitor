@@ -210,7 +210,20 @@ class TCPListener
         }
 
     }
+    public static FileInfo MakeUnique(string path)
+    {
+        string dir = Path.GetDirectoryName(path);
+        string fileName = Path.GetFileNameWithoutExtension(path);
+        string fileExt = Path.GetExtension(path);
 
+        for (int i = 1; ; ++i)
+        {
+            if (!File.Exists(path))
+                return new FileInfo(path);
+
+            path = Path.Combine(dir, fileName + " " + i + fileExt);
+        }
+    }
     public static void Main(string[] args)
     {
         {
@@ -240,7 +253,9 @@ class TCPListener
                 SS,
                 CS,
                 NM,
-                PA
+                PA,
+                LWB,
+                TWB
             };
 
                 // string[] hostArray = { "172.16.35.168", "172.16.35.160", "172.16.35.150", "172.16.35.6", "172.16.35.82", "172.16.6.71" };
@@ -271,12 +286,28 @@ class TCPListener
                         try
                         {
                             //Console.WriteLine(today);
-                            FileInfo txtfile = new FileInfo("C:\\Produmex\\Log\\ScaleCommLog.txt");
-                            //string newFileName = "C:\\Produmex\\Log\\ScaleCommLog" + today + ".txt";
-                            if (txtfile.Length > (10 * 1024 * 1024))       // ## NOTE: 10MB max file size
+                            string logFileName = "C:\\Produmex\\Log\\ScaleCommLog.txt";
+                            FileInfo txtfile = new FileInfo(logFileName);
+                            string newFileName = "C:\\Produmex\\Log\\ScaleCommLog_" + today + ".txt";
+                            if (txtfile.Length > (1 * 1024))       // ## NOTE: 10MB max file size
                             {
-                                System.IO.File.Move("C:\\Produmex\\Log\\ScaleCommLog.txt", "C:\\Produmex\\Log\\ScaleCommLog_" + today + ".txt");
-                            }
+                                if (File.Exists(logFileName))
+                                {
+                                    //Console.WriteLine("HELLO");
+                                    MakeUnique(logFileName);
+                                    //System.IO.File.Move("C:\\Produmex\\Log\\ScaleCommLog.txt", newFileName);
+                                    // if (File.Exists(newFileName))
+                                    //{
+                                    //   MakeUnique(newFileName);
+                                    //}
+                                }
+                                else
+                                {
+                                    
+                                }
+                                }
+                            
+                            
                         }
                         catch { }
 
